@@ -1,0 +1,88 @@
+===================================================
+GET
+/users/:userName/cards
+Query param: completed (false por defecto)
+Devuelve la lista de tarjetas del usuario correspondiente al userName
+
+STATUS 200
+Response: [{
+	id:	number,
+  title: string,
+	description: string,
+	selectedMovieId: number,
+	movieImageUrl: string
+}]
+
+STATUS 404
+Response: "User cards not found"
+===================================================
+GET
+/users/:userName/cards/:cardId
+Devuelve los datos de la tarjeta correspondiente a la id
+
+STATUS 200
+Response: {
+	id:	number,
+  title: string,
+	description: string,
+	selectedMovieId: number,
+	movieImageUrl: string
+}
+
+STATUS 404
+Response: "This card doesn't exist"
+===================================================
+POST
+/users/:userName/cards
+Agrega una nueva tarjeta a lista de tajetas del usuario
+Body:
+{
+	title: string,
+	description: string,
+	selectedMovieId: number,
+	movieImageUrl: string
+}
+
+STATUS 201:
+{
+	id:	number,
+  title: string,
+	description: string,
+	selectedMovieId: number,
+	movieImageUrl: string
+}
+
+STATUS 400
+===================================================
+PATCH
+/users/:userName/cards/:cardId
+Modifica uno o varios datos de la tarjeta correspondiente a la id
+Body:
+{
+	title?: string,
+	description?: string,
+	selectedMovieId?: number,
+	movieImageUrl?: string
+}
+
+STATUS: 204
+Response: {
+	id:	number,
+  title: string,
+	description: string,
+	selectedMovieId: number,
+	movieImageUrl: string
+}
+
+STATUS: 404
+Response: "This card doesn't exist"
+===================================================
+DELETE
+/users/:userName/cards/:cardId
+Elimina la tarjeta con la id correspondiente
+
+STATUS: 204
+Response: "Card has been deleted successfully"
+
+STATUS: 404
+Response: "This card doesn't exist"
