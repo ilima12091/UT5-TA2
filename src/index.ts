@@ -37,6 +37,19 @@ const users = [
   },
 ];
 
+
+// post cards
+app.post('/users/:userName/card', (req, res) => {
+    const { userName } = req.params;
+    const cardInfo = req.body; // Datos de la tarjeta enviados en el cuerpo de la solicitud
+    const user = users.find((u) => u.userName === userName);
+    if (!user) {
+        return res.status(404).send('User not found');
+    }
+    user.cards.push(cardInfo);
+    res.json({ message: 'Tarjeta agregada correctamente' });
+});
+
 app.get("/users/:userName/cards", (req, res) => {
   const completed = Boolean(req.query.completed) ?? false;
   const { userName } = req.params;
