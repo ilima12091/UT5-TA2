@@ -76,4 +76,19 @@ app.delete("/users/:userName/cards/:cardId", (req, res) => {
   res.status(204).send("Card has been deleted successfully"); //sends 204 response when card is deleted successfully
 });
 
+app.patch("/users/:userName/cards/:cardId", (req, res) => {
+  const { cardId, userName } = req.params;
+  const user = users.find((u) => u.userName === userName);
+  if (!user) {
+    res.status(404).send("This user doesn't exist");
+  }
+  const card = user.cards.find((c) => c.id === Number(cardId));
+  if (!card){
+    res.status(404).send("This card doesn't exist");
+  }
+  const updatedCardData = req.body;
+  Object.assign(card, updatedCardData);
+  res.json(card);
+});
+
 app.listen(port);
