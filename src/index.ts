@@ -23,18 +23,29 @@ const users = [
         description: "Subir 200 paginas para leer 1 dia antes del RAT",
         selectedMovieId: 100,
         movieImageUrl: "http://localhost.com",
+        completed: false,
+      },
+      {
+        id: 2,
+        title: "Evitar un rickroll",
+        description: "Evitar que mis alumnos me rickrolleen",
+        selectedMovieId: 102,
+        movieImageUrl: "http://localhost.com",
+        completed: true,
       },
     ],
   },
 ];
 
 app.get("/users/:userName/cards", (req, res) => {
+  const completed = Boolean(req.query.completed) ?? false;
   const { userName } = req.params;
   const user = users.find((u) => u.userName === userName);
   if (!user) {
-    res.status(404).send("User cards not found");
+    res.status(404).send("User not found");
   }
-  res.send(user?.cards);
+  const response = completed ? user?.cards.filter((c) => c.completed) : user?.cards;
+  res.send(response);
 });
 
 app.listen(port);
