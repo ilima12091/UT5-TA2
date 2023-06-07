@@ -48,4 +48,19 @@ app.get("/users/:userName/cards", (req, res) => {
   res.send(response);
 });
 
+app.delete("/users/:userName/cards/:cardId", (req, res) => {
+  const { userName, cardId } = req.params; //Gets the username and card Id from the parameters sent in the req
+  const user = users.find((u) => u.userName === userName); //finds the user 
+
+  const cardIndex = user.cards.findIndex((card) => card.id === parseInt(cardId,10)); //finds the index of the card in the user's cards
+
+  if (cardIndex === -1) {
+    res.status(404).send("This card doesn't exist"); //returns 404 with error msg if the card isn't found
+    return;
+  }
+
+  user.cards.splice(cardIndex, 1); //card is removed from the user's cards
+  res.status(204).send("Card has been deleted successfully"); //sends 204 response when card is deleted successfully
+});
+
 app.listen(port);
