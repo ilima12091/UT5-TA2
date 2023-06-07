@@ -37,17 +37,15 @@ const users = [
   },
 ];
 
-
-// post cards
-app.post('/users/:userName/card', (req, res) => {
-    const { userName } = req.params;
-    const cardInfo = req.body; // Datos de la tarjeta enviados en el cuerpo de la solicitud
-    const user = users.find((u) => u.userName === userName);
-    if (!user) {
-        return res.status(404).send('User not found');
-    }
-    user.cards.push(cardInfo);
-    res.json({ message: 'Tarjeta agregada correctamente' });
+app.post("/users/:userName/card", (req, res) => {
+  const { userName } = req.params;
+  const cardInfo = req.body; // Card data sent on request body
+  const user = users.find((u) => u.userName === userName);
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
+  user.cards.push(cardInfo);
+  res.send("Card created successfully");
 });
 
 app.get("/users/:userName/cards", (req, res) => {
@@ -55,25 +53,24 @@ app.get("/users/:userName/cards", (req, res) => {
   const { userName } = req.params;
   const user = users.find((u) => u.userName === userName);
   if (!user) {
-    res.status(404).send("User not found");
+    return res.status(404).send("User not found");
   }
   const response = completed ? user?.cards.filter((c) => c.completed) : user?.cards;
   res.send(response);
 });
 
 app.delete("/users/:userName/cards/:cardId", (req, res) => {
-  const { userName, cardId } = req.params; //Gets the username and card Id from the parameters sent in the req
-  const user = users.find((u) => u.userName === userName); //finds the user 
+  const { userName, cardId } = req.params; // Gets the username and card Id from the parameters sent in the req
+  const user = users.find((u) => u.userName === userName); // finds the user
 
-  const cardIndex = user.cards.findIndex((card) => card.id === parseInt(cardId,10)); //finds the index of the card in the user's cards
+  const cardIndex = user.cards.findIndex((card) => card.id === parseInt(cardId, 10)); // finds the index of the card in the user's cards
 
   if (cardIndex === -1) {
-    res.status(404).send("This card doesn't exist"); //returns 404 with error msg if the card isn't found
-    return;
+    return res.status(404).send("This card doesn't exist"); // returns 404 with error msg if the card isn't found
   }
 
-  user.cards.splice(cardIndex, 1); //card is removed from the user's cards
-  res.status(204).send("Card has been deleted successfully"); //sends 204 response when card is deleted successfully
+  user.cards.splice(cardIndex, 1); // card is removed from the user's cards
+  res.status(204).send("Card has been deleted successfully"); // sends 204 response when card is deleted successfully
 });
 
 app.patch("/users/:userName/cards/:cardId", (req, res) => {
